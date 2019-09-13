@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Qt 学习之路 2（18）：事件 　　事件（event）是由系统或者 Qt 本身在不同的时刻发出的。当用户按下鼠标、敲下键盘，或者是窗口需要重新绘制的时候，都会发出一个相应的事件。一些事件在对用户操作做出响应时发出，如键盘事件等；另一些事件则是由系统自动发出，如计时器事件。">
+<meta name="keywords" content="QT,QT学习之路2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="学习QT（五）—《QT学习之路2》摘录-3（事件）">
+<meta property="og:url" content="http://jukezhang.vip/2014/11/21/learn-qt-five/index.html">
+<meta property="og:site_name" content="Joke&#39;s blog">
+<meta property="og:description" content="Qt 学习之路 2（18）：事件 　　事件（event）是由系统或者 Qt 本身在不同的时刻发出的。当用户按下鼠标、敲下键盘，或者是窗口需要重新绘制的时候，都会发出一个相应的事件。一些事件在对用户操作做出响应时发出，如键盘事件等；另一些事件则是由系统自动发出，如计时器事件。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-07T16:41:54.456Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="学习QT（五）—《QT学习之路2》摘录-3（事件）">
+<meta name="twitter:description" content="Qt 学习之路 2（18）：事件 　　事件（event）是由系统或者 Qt 本身在不同的时刻发出的。当用户按下鼠标、敲下键盘，或者是窗口需要重新绘制的时候，都会发出一个相应的事件。一些事件在对用户操作做出响应时发出，如键盘事件等；另一些事件则是由系统自动发出，如计时器事件。">
+  <link rel="canonical" href="http://jukezhang.vip/2014/11/21/learn-qt-five/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>学习QT（五）—《QT学习之路2》摘录-3（事件） | Joke's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Joke's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Stay hungry, stay foolish - Steve Jobs</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://jukezhang.vip/2014/11/21/learn-qt-five/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Joke">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Joke's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">学习QT（五）—《QT学习之路2》摘录-3（事件）
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2014-11-21 16:09:45" itemprop="dateCreated datePublished" datetime="2014-11-21T16:09:45+08:00">2014-11-21</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-08 00:41:54" itemprop="dateModified" datetime="2019-09-08T00:41:54+08:00">2019-09-08</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/QT/" itemprop="url" rel="index"><span itemprop="name">QT</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <ul>
+<li><a href="http://www.devbean.net/2012/09/qt-study-road-2-events/" target="_blank" rel="noopener">Qt 学习之路 2（18）：事件</a><blockquote>
+<p>　　事件（event）是由系统或者 Qt 本身在不同的时刻发出的。当用户按下鼠标、敲下键盘，或者是窗口需要重新绘制的时候，都会发出一个相应的事件。一些事件在对用户操作做出响应时发出，如<strong>键盘事件</strong>等；另一些事件则是由系统自动发出，如<strong>计时器事件</strong>。</p>
+</blockquote>
+</li>
+</ul>
+<a id="more"></a>
+<blockquote>
+<p>　　事件也就是我们通常说的“事件驱动（event drive）”程序设计的基础概念。事件的出现，使得程序代码不会按照原始的线性顺序执行。这种类似“批处理”的程序设计风格显然不适合于处理复杂的用户交互。这就是所谓的“事件驱动”，我们的程序的执行顺序不再是线性的，而是由一个个事件驱动着程序继续执行。没有事件，程序将阻塞在那里，不执行任何代码。<br>　　在 Qt 中，事件的概念似乎同信号槽类似。的确如此，一般来说，使用 Qt 组件时，我们并不会把主要精力放在事件上。因为在 Qt 中，我们关心的更多的是事件关联的一个信号。<br>　　————————————————————————-<br>　　但是，Qt 中的事件和信号槽却并不是可以相互替代的。信号由具体的对象发出，然后会马上交给由connect()函数连接的槽进行处理；而对于事件，Qt 使用一个事件队列对所有发出的事件进行维护，当新的事件产生时，会被追加到事件队列的尾部。前一个事件完成后，取出后面的事件进行处理。但是，必要的时候，Qt 的事件也可以不进入事件队列，而是直接处理。信号一旦发出，对应的槽函数一定会被执行。但是，事件则可以使用“事件过滤器”进行过滤，对于有些事件进行额外的处理，另外的事件则不关心。<strong>总的来说，如果我们使用组件，我们关心的是信号槽；如果我们自定义组件，我们关心的是事件。</strong>因为我们可以通过事件来改变组件的默认操作。<br>　　————————————————————————-<br>　　在所有组件的父类QWidget中，定义了很多事件处理的回调函数，如keyPressEvent()、keyReleaseEvent()、mouseDoubleClickEvent()、mouseMoveEvent()、mousePressEvent()、mouseReleaseEvent()等。这些函数都是 protected virtual 的，也就是说，我们可以在子类中重新实现这些函数。<br>　　————————————————————————-<br>　　为什么要点击鼠标之后才能在mouseMoveEvent()函数中显示鼠标坐标值？这是因为QWidget中有一个mouseTracking属性，该属性用于设置是否追踪鼠标。只有鼠标被追踪时，mouseMoveEvent()才会发出。如果mouseTracking是 false（默认即是），组件在至少一次鼠标点击之后，才能够被追踪，也就是能够发出mouseMoveEvent()事件。如果mouseTracking为 true，则mouseMoveEvent()直接可以被发出。</p>
+</blockquote>
+<ul>
+<li><a href="http://www.devbean.net/2012/09/qt-study-road-2-events-accept-reject/" target="_blank" rel="noopener"><strong>Qt 学习之路 2（19）：事件的接受与忽略</strong></a><blockquote>
+<p>　　我们把父类的实现覆盖掉了。由此可以看出，父类QPushButton的mousePressEvent()函数中肯定发出了clicked()信号，否则的话，我们的槽函数怎么会不执行了呢？这暗示我们一个非常重要的细节：当重写事件回调函数时，时刻注意是否需要通过调用父类的同名函数来确保原有实现仍能进行！比如我们的CustomButton了，如果像我们这么覆盖函数，clicked()信号永远不会发生，你连接到这个信号的槽函数也就永远不会被执行。这个错误非常隐蔽，很可能会浪费你很多时间才能找到。因为这个错误不会有任何提示。这一定程度上说，我们的组件“忽略”了父类的事件，但这更多的是一种违心之举，一种错误。<br>　　通过调用父类的同名函数，我们可以把 Qt 的事件传递看成链状：如果子类没有处理这个事件，就会继续向其父类传递。在事件处理函数中，可以使用isAccepted()来查询这个事件是不是已经被接收了。<strong>具体来说：如果一个事件处理函数调用了一个事件对象的accept()函数，这个事件就不会被继续传播给其父组件；如果它调用了事件的ignore()函数，Qt 会从其父组件中寻找另外的接受者。</strong><br>　　事实上，我们很少会使用accept()和ignore()函数，而是像上面的示例一样，如果希望忽略事件（所谓忽略，是指自己不想要这个事件），只要调用父类的响应函数即可。记得我们曾经说过，Qt 中的事件都是 protected 的，因此，重写的函数必定存在着其父类中的响应函数，所以，这个方法是可行的。为什么要这么做，而不是自己去手动调用这两个函数呢？因为我们无法确认父类中的这个处理函数有没有额外的操作。如果我们在子类中直接忽略事件，Qt 会去寻找其他的接收者，该子类的父类的操作会被忽略（因为没有调用父类的同名函数），这可能会有潜在的危险。<strong>为了避免自己去调用accept()和ignore()函数，而是尽量调用父类实现，Qt 做了特殊的设计：事件对象默认是 accept 的，而作为所有组件的父类QWidget的默认实现则是调用ignore()。这么一来，如果你自己实现事件处理函数，不调用QWidget的默认实现，你就等于是接受了事件；如果你要忽略事件，只需调用QWidget的默认实现。</strong>这一点我们前面已经说明。下面可以从代码级别来理解这一点，我们可以查看一下QWidget的mousePressEvent()函数的实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">//!!! Qt5</span><br><span class="line">void QWidget::mousePressEvent(QMouseEvent *event)</span><br><span class="line">&#123;</span><br><span class="line">    event-&gt;ignore();</span><br><span class="line">    if ((windowType() == Qt::Popup)) &#123;</span><br><span class="line">        event-&gt;accept();</span><br><span class="line">        QWidget* w;</span><br><span class="line">        while ((w = QApplication::activePopupWidget()) &amp;&amp; w != this)&#123;</span><br><span class="line">            w-&gt;close();</span><br><span class="line">            if (QApplication::activePopupWidget() == w)</span><br><span class="line">                w-&gt;hide(); // hide at least</span><br><span class="line">        &#125;</span><br><span class="line">        if (!rect().contains(event-&gt;pos()))&#123;</span><br><span class="line">            close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>　　这段代码在 Qt4 和 Qt5 中基本一致（区别在于activePopupWidget()一行，Qt4 的版本是qApp-&gt;activePopupWidget()）。注意函数的第一个语句：event-&gt;ignore()，如果子类都没有重写这个函数，Qt 会默认忽略这个事件，继续寻找下一个事件接收者。<strong>如果我们在子类的mousePressEvent()函数中直接调用了accept()或者ignore()，而没有调用父类的同名函数，QWidget::mousePressEvent()函数中关于Popup判断的那段代码就不会被执行，因此可能会出现莫名其妙的怪异现象。</strong><br>　　————————————————————————-<br>　　<strong>这里值得注意的是，CustomButtonEx的事件传播给了父组件CustomWidget，而不是它的父类CustomButton。事件的传播是在组件层次上面的，而不是依靠类继承机制。</strong><br>　　————————————————————————-<br>　　如果你把QWidget::mousePressEvent(event)改成event-&gt;ignore()，结果也是一样的。这正如我们前面说的，QWidget的默认是调用event-&gt;ignore()。<br>　　不过，事情也不是绝对的。在一个情形下，我们必须使用accept()和ignore()函数，那就是窗口关闭的事件。注意，不要试图用前面了解到的有关accept()和ignore()的知识来理解这个事件！对于QCloseEvent事件，调用accept()意味着 Qt 会停止事件的传播，调用ignore()则意味着事件继续传播。<br>　　————————————————————————-<br>　　setWindowTitle()函数可以使用 <code>[*]</code> 这种语法来表明，在窗口内容发生改变时（通过setWindowModified(true)函数通知），Qt 会自动在标题上面的 <code>[*]</code> 位置替换成 * 号。</p>
+</blockquote>
+<ul>
+<li><a href="http://www.devbean.net/2012/10/qt-study-road-2-event-func/" target="_blank" rel="noopener">Qt 学习之路 2（20）：event()</a><blockquote>
+<p>　　前面的章节中我们曾经提到event()函数。事件对象创建完毕后，Qt 将这个事件对象传递给QObject的event()函数。event()函数并不直接处理事件，而是将这些事件对象按照它们不同的类型，分发给不同的事件处理器（event handler）。<br>　　如上所述，event()函数主要用于事件的分发。所以，如果你希望在事件分发之前做一些操作，就可以重写这个event()函数了。例如，我们希望在一个QWidget组件中监听 tab 键的按下，那么就可以继承QWidget，并重写它的event()函数，来达到这个目的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">bool CustomWidget::event(QEvent *e)</span><br><span class="line">&#123;</span><br><span class="line">    if (e-&gt;type() == QEvent::KeyPress) &#123;</span><br><span class="line">        QKeyEvent *keyEvent = static_cast&lt;QKeyEvent *&gt;(e);</span><br><span class="line">        if (keyEvent-&gt;key() == Qt::Key_Tab) &#123;</span><br><span class="line">            qDebug() &lt;&lt; &quot;You press tab.&quot;;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return QWidget::event(e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>　　CustomWidget是一个普通的QWidget子类。我们重写了它的event()函数，这个函数有一个QEvent对象作为参数，也就是需要转发的事件对象。<strong>函数返回值是 bool 类型。如果传入的事件已被识别并且处理，则需要返回 true，否则返回 false。</strong>如果返回值是 true，并且，该事件对象设置了accept()，那么 Qt 会认为这个事件已经处理完毕，不会再将这个事件发送给其它对象，而是会继续处理事件队列中的下一事件。<strong>注意，在event()函数中，调用事件对象的accept()和ignore()函数是没有作用的，不会影响到事件的传播。</strong><br>　　————————————————————————-<br>　　由此可以见，event()是一个集中处理不同类型的事件的地方。如果你不想重写一大堆事件处理器，就可以重写这个event()函数，通过QEvent::type()判断不同的事件。鉴于重写event()函数需要十分小心注意父类的同名函数的调用，一不留神就可能出现问题，所以一般还是建议只重写事件处理器（当然，也必须记得是不是应该调用父类的同名处理器）。这其实暗示了event()函数的另外一个作用：屏蔽掉某些不需要的事件处理器。正如我们前面的CustomTextEdit例子看到的那样，我们创建了一个只能响应 tab 键的组件。这种作用是重写事件处理器所不能实现的。</p>
+</blockquote>
+<ul>
+<li><a href="http://www.devbean.net/2012/10/qt-study-road-2-event-filter/" target="_blank" rel="noopener">Qt 学习之路 2（21）：事件过滤器</a><blockquote>
+<p>　　有时候，对象需要查看、甚至要拦截发送到另外对象的事件。例如，对话框可能想要拦截按键事件，不让别的组件接收到；或者要修改回车键的默认处理。<br>　　通过前面的章节，我们已经知道，Qt 创建了QEvent事件对象之后，会调用QObject的event()函数处理事件的分发。显然，我们可以在event()函数中实现拦截的操作。由于event()函数是 protected 的，因此，需要继承已有类。如果组件很多，就需要重写很多个event()函数。这当然相当麻烦，更不用说重写event()函数还得小心一堆问题。好在 Qt 提供了另外一种机制来达到这一目的：事件过滤器。<br>　　QObject有一个eventFilter()函数，用于建立事件过滤器。这个函数的签名如下：<br>　　<code>virtual bool QObject::eventFilter ( QObject * watched, QEvent * event );</code><br>　　这个函数正如其名字显示的那样，是一个“事件过滤器”。所谓事件过滤器，可以理解成一种过滤代码。想想做化学实验时用到的过滤器，可以将杂质留到滤纸上，让过滤后的液体溜走。事件过滤器也是如此：它会检查接收到的事件。如果这个事件是我们感兴趣的类型，就进行我们自己的处理；如果不是，就继续转发。这个函数返回一个 bool 类型，如果你想将参数 event 过滤出来，比如，不想让它继续转发，就返回 true，否则返回 false。事件过滤器的调用时间是目标对象（也就是参数里面的watched对象）接收到事件对象之前。也就是说，如果你在事件过滤器中停止了某个事件，那么，watched对象以及以后所有的事件过滤器根本不会知道这么一个事件。<br>　　eventFilter()函数相当于创建了过滤器，然后我们需要安装这个过滤器。安装过滤器需要调用QObject::installEventFilter()函数。这个函数的签名如下：<br>　　<code>void QObject::installEventFilter ( QObject * filterObj )</code><br>　　这个函数接受一个QObject *类型的参数。记得刚刚我们说的，eventFilter()函数是QObject的一个成员函数，因此，任意QObject都可以作为事件过滤器（问题在于，如果你没有重写eventFilter()函数，这个事件过滤器是没有任何作用的，因为默认什么都不会过滤）。已经存在的过滤器则可以通过QObject::removeEventFilter()函数移除。<br>　　我们可以向一个对象上面安装多个事件处理器，只要调用多次installEventFilter()函数。如果一个对象存在多个事件过滤器，那么，最后一个安装的会第一个执行，也就是后进先执行的顺序。<br>　　还记得我们前面的那个例子吗？我们使用event()函数处理了 Tab 键。现在，我们可以给出一个使用事件过滤器的版本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">bool FilterObject::eventFilter(QObject *object, QEvent *event)</span><br><span class="line">&#123;</span><br><span class="line">    if (object == target &amp;&amp; event-&gt;type() == QEvent::KeyPress) &#123;</span><br><span class="line">        QKeyEvent *keyEvent = static_cast&lt;QKeyEvent *&gt;(event);</span><br><span class="line">        if (keyEvent-&gt;key() == Qt::Key_Tab) &#123;</span><br><span class="line">            qDebug() &lt;&lt; &quot;You press tab.&quot;;</span><br><span class="line">            return true;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return false;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>　　事件过滤器的强大之处在于，我们可以为整个应用程序添加一个事件过滤器。记得，installEventFilter()函数是QObject的函数，QApplication或者QCoreApplication对象都是QObject的子类，因此，我们可以向QApplication或者QCoreApplication添加事件过滤器。这种全局的事件过滤器将会在所有其它特性对象的事件过滤器之前调用。尽管很强大，但这种行为会严重降低整个应用程序的事件分发效率。因此，除非是不得不使用的情况，否则的话我们不应该这么做。<br>　　<strong>注意，如果你在事件过滤器中 delete 了某个接收组件，务必将函数返回值设为 true。否则，Qt 还是会将事件分发给这个接收组件，从而导致程序崩溃。</strong><br>　　事件过滤器和被安装过滤器的组件必须在同一线程，否则，过滤器将不起作用。另外，如果在安装过滤器之后，这两个组件到了不同的线程，那么，只有等到二者重新回到同一线程的时候过滤器才会有效。</p>
+</blockquote>
+<ul>
+<li><p><a href="http://www.devbean.net/2012/10/qt-study-road-2-event-summary/" target="_blank" rel="noopener"><strong>Qt 学习之路 2（22）：事件总结</strong></a></p>
+<blockquote>
+<p>　　Qt 具有这么多种事件处理函数，肯定有一个地方对其进行分发，否则，Qt 怎么知道哪一种事件调用哪一个事件处理函数呢？这个分发的函数，就是event()。显然，当QMouseEvent产生之后，event()函数将其分发给mouseEvent()事件处理器进行处理。<br>　　event()函数会有两个问题：<br>　　1. event()函数是一个 protected 的函数，这意味着我们要想重写event()，必须继承一个已有的类。试想，我的程序根本不想要鼠标事件，程序中所有组件都不允许处理鼠标事件，是不是我得继承所有组件，一一重写其event()函数？protected 函数带来的另外一个问题是，如果我基于第三方库进行开发，而对方没有提供源代码，只有一个链接库，其它都是封装好的。我怎么去继承这种库中的组件呢？<br>　　2. event()函数的确有一定的控制，不过有时候我的需求更严格一些：我希望那些组件根本看不到这种事件。event()函数虽然可以拦截，但其实也是接收到了QMouseEvent对象。我连让它收都收不到。这样做的好处是，模拟一种系统根本没有那个事件的效果，所以其它组件根本不会收到这个事件，也就无需修改自己的事件处理函数。这种需求怎么办呢？<br>　　————————————————————————-<br>　　<strong>事件过滤器可以解决刚刚我们提出的event()函数的两点不足：首先，事件过滤器不是 protected 的，因此我们可以向任何QObject子类安装事件过滤器；其次，事件过滤器在目标对象接收到事件之前进行处理，如果我们将事件过滤掉，目标对象根本不会见到这个事件。</strong><br>　　事实上，还有一种方法，我们没有介绍。Qt 事件的调用最终都会追溯到QCoreApplication::notify()函数，因此，最大的控制权实际上是重写QCoreApplication::notify()。这个函数的声明是：<br>　　<code>virtual bool QCoreApplication::notify ( QObject * receiver, QEvent * event );</code><br>　　该函数会将event发送给receiver，也就是调用receiver-&gt;event(event)，其返回值就是来自receiver的事件处理器。注意，这个函数为任意线程的任意对象的任意事件调用，因此，它不存在事件过滤器的线程的问题。不过我们并不推荐这么做，因为notify()函数只有一个，而事件过滤器要灵活得多。<br>　　现在我们可以总结一下 Qt 的事件处理，实际上是有五个层次：<br>　　1. 重写paintEvent()、mousePressEvent()等事件处理函数。这是最普通、最简单的形式，同时功能也最简单。<br>　　2. 重写event()函数。event()函数是所有对象的事件入口，QObject和QWidget中的实现，默认是把事件传递给特定的事件处理函数。<br>　　3. 在特定对象上面安装事件过滤器。该过滤器仅过滤该对象接收到的事件。<br>　　4. 在QCoreApplication::instance()上面安装事件过滤器。该过滤器将过滤所有对象的所有事件，因此和notify()函数一样强大，但是它更灵活，因为可以安装多个过滤器。全局的事件过滤器可以看到 disabled 组件上面发出的鼠标事件。全局过滤器有一个问题：只能用在主线程。<br>　　5. 重写QCoreApplication::notify()函数。这是最强大的，和全局事件过滤器一样提供完全控制，并且不受线程的限制。但是全局范围内只能有一个被使用（因为QCoreApplication是单例的）。<br>　　————————————————————————-<br>　　<strong>因此可以知道，全局事件过滤器被第一个调用，之后是该对象上面的事件过滤器，其次是event()函数，最后是特定的事件处理函数。</strong></p>
+</blockquote>
+</li>
+<li><p><a href="http://www.devbean.net/2012/10/qt-study-road-2-custom-event/" target="_blank" rel="noopener"><strong>Qt 学习之路 2（23）：自定义事件</strong></a></p>
+<blockquote>
+<p>　　当然，事件也并不是局限在多线程中，它可以用在单线程的程序中，作为一种对象间通讯的机制。那么，为什么我需要使用事件，而不是信号槽呢？主要原因是，事件的分发既可以是同步的，又可以是异步的，而函数的调用或者说是槽的回调总是同步的。事件的另外一个好处是，它可以使用过滤器。</p>
+</blockquote>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/QT/" rel="tag"># QT</a>
+            
+              <a href="/tags/QT学习之路2/" rel="tag"># QT学习之路2</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2014/11/21/learn-qt-four/" rel="next" title="学习QT（四）—《QT学习之路2》摘录-2（对话框）">
+                  <i class="fa fa-chevron-left"></i> 学习QT（四）—《QT学习之路2》摘录-2（对话框）
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2014/11/22/learn-qt-six/" rel="prev" title="学习QT（六）—《QT学习之路2》摘录-4（绘制系统）">
+                  学习QT（六）—《QT学习之路2》摘录-4（绘制系统） <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Joke</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span>
+        
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">标签</span>
+        
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Joke</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="为何学习QT 先看看各种GUI库的比较：wxWidgets与其他工具库的比较(上)、wxWidgets与其他工具库的比较(下)  知乎关于QT前景的讨论：Qt的前景如何？Qt for Android 好吗？">
+<meta name="keywords" content="QT,QT Creator">
+<meta property="og:type" content="article">
+<meta property="og:title" content="学习QT（一）—下载安装与设置">
+<meta property="og:url" content="http://jukezhang.vip/2014/11/15/learn-qt-one/index.html">
+<meta property="og:site_name" content="Joke&#39;s blog">
+<meta property="og:description" content="为何学习QT 先看看各种GUI库的比较：wxWidgets与其他工具库的比较(上)、wxWidgets与其他工具库的比较(下)  知乎关于QT前景的讨论：Qt的前景如何？Qt for Android 好吗？">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://keke-hexo-blog.qiniudn.com/image/QT/QT Creator-字体和颜色.png">
+<meta property="og:image" content="http://keke-hexo-blog.qiniudn.com/image/QT/QT Creator-高亮显示.png">
+<meta property="og:image" content="http://keke-hexo-blog.qiniudn.com/image/QT/QT Creator-高亮显示效果.png">
+<meta property="og:image" content="http://keke-hexo-blog.qiniudn.com/image/QT/QT Creator-欢迎.png">
+<meta property="og:image" content="http://keke-hexo-blog.qiniudn.com/image/QT/QT Creator-Application Example.png">
+<meta property="og:image" content="http://keke-hexo-blog.qiniudn.com/image/QT/QT Creator-Getting Started.png">
+<meta property="og:image" content="http://keke-hexo-blog.qiniudn.com/image/QT/QT Creator帮助.png">
+<meta property="og:image" content="http://keke-hexo-blog.qiniudn.com/image/QT/QT Creator左边栏.png">
+<meta property="og:image" content="http://keke-hexo-blog.qiniudn.com/image/QT/QT Creator上侧导航栏.png">
+<meta property="og:image" content="http://keke-hexo-blog.qiniudn.com/image/QT/QT Creator下侧调试结果显示.png">
+<meta property="og:updated_time" content="2019-09-07T16:41:54.466Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="学习QT（一）—下载安装与设置">
+<meta name="twitter:description" content="为何学习QT 先看看各种GUI库的比较：wxWidgets与其他工具库的比较(上)、wxWidgets与其他工具库的比较(下)  知乎关于QT前景的讨论：Qt的前景如何？Qt for Android 好吗？">
+<meta name="twitter:image" content="http://keke-hexo-blog.qiniudn.com/image/QT/QT Creator-字体和颜色.png">
+  <link rel="canonical" href="http://jukezhang.vip/2014/11/15/learn-qt-one/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>学习QT（一）—下载安装与设置 | Joke's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Joke's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Stay hungry, stay foolish - Steve Jobs</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://jukezhang.vip/2014/11/15/learn-qt-one/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Joke">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Joke's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">学习QT（一）—下载安装与设置
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2014-11-15 21:44:17" itemprop="dateCreated datePublished" datetime="2014-11-15T21:44:17+08:00">2014-11-15</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-08 00:41:54" itemprop="dateModified" datetime="2019-09-08T00:41:54+08:00">2019-09-08</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/QT/" itemprop="url" rel="index"><span itemprop="name">QT</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="为何学习QT"><a href="#为何学习QT" class="headerlink" title="为何学习QT"></a>为何学习QT</h2><ol>
+<li><p><strong>先看看各种GUI库的比较</strong>：<a href="http://devbean.blog.51cto.com/448512/175190/" target="_blank" rel="noopener">wxWidgets与其他工具库的比较(上)</a>、<a href="http://devbean.blog.51cto.com/448512/183119" target="_blank" rel="noopener">wxWidgets与其他工具库的比较(下)</a></p>
+</li>
+<li><p><strong>知乎关于QT前景的讨论</strong>：<a href="http://www.zhihu.com/question/19689965" target="_blank" rel="noopener">Qt的前景如何？Qt for Android 好吗？</a></p>
+</li>
+</ol>
+<a id="more"></a>
+<ol start="3">
+<li><strong>个人感受</strong><br>　　总的说来，QT的优点是：更加面向对象，写出来的程序代码简洁清晰；缺点是：不是Native界面，且由于机制原因，编译和运行速度有点慢，不过现在配置相对比较高，大家连Java和C#的速度都可以忍受，这一点不足为虑。<br>　　个人通过简短的使用，发现QT Creator比VS更快速，设计得也更易用，该有的功能都有，不像VS那么臃肿；QT的信号（Signal）与槽（Slot）机制比MFC的消息机制更易懂。个人认为QT的适用对象和场合为：<blockquote>
+<p>C++的忠实粉丝（喜欢C++的人通常会喜欢上基于C++的QT，用QT Widgets做UI写出的代码很优美）；<br>习惯使用MFC的程序员（QT Widgets与MFC一样易用，但是没有MFC那么杂乱）；<br>需要编写跨平台程序（QT应该是目前跨的平台最多的UI库，规模也较大，易用、有保障）；<br>需要编写Linux程序（QT Creator+QT可以媲美Windows上的VS+MFC）；<br>打算自己编写开源程序（可以使用QT5和C++11/14最新特性，写出跨平台的开源程序）；</p>
+</blockquote>
+</li>
+</ol>
+<p>　　不过好多时候给别人做软件时，考虑到兼容性和风险，都被指定了特定版本的IDE或类库，只有在自己构建小型开源项目时可以一直追求最新的标准、最新的类库。</p>
+<h2 id="QT学习资料"><a href="#QT学习资料" class="headerlink" title="QT学习资料"></a>QT学习资料</h2><p>知乎文章：<a href="http://www.zhihu.com/question/23717444" target="_blank" rel="noopener">有哪些Qt博客写得好值得推荐看看？</a><br>From Quora: <a href="https://www.quora.com/How-should-I-start-learning-Qt" target="_blank" rel="noopener">How should I start learning Qt?</a></p>
+<p><a href="http://bbs.qter.org/forum.php?mod=viewthread&amp;tid=193" target="_blank" rel="noopener">Qt快速入门系列教程目录</a><br><a href="http://devbean.blog.51cto.com/448512/d-8" target="_blank" rel="noopener">Qt - 豆子空间</a>、<a href="http://www.devbean.net/category/qt-study-road-2/" target="_blank" rel="noopener">Qt 学习之路 2（目前在看，强烈建议，基于QT5，用法地道）</a><br><a href="http://blog.csdn.net/dbzhang800/article/details/6300789" target="_blank" rel="noopener">1+1=2的 blog 文章索引</a>、<a href="http://blog.debao.me/" target="_blank" rel="noopener">1+1=2（英文）</a><br><a href="http://www.dushibaiyu.com/category/code/jichu/qt-jichu" target="_blank" rel="noopener">Qt | 渡世白玉</a>、<a href="http://blog.sina.com.cn/s/articlelist_2801495241_2_1.html" target="_blank" rel="noopener">Qt_一去丶二三里_新浪博客</a></p>
+<p>官方：<br><a href="https://qt-project.org/wiki/Developer-Guides" target="_blank" rel="noopener">Qt Developer Guides</a>、<a href="http://qt-project.org/wiki" target="_blank" rel="noopener">QT wiki</a><br><a href="http://qt-project.org/wiki/gettingstartedqtChinese" target="_blank" rel="noopener">Qt编程入门（不建议看，基于QT4讲的，有些用法已经被淘汰）</a>、<a href="http://qt-project.org/wiki/gettingstartqmlChinese" target="_blank" rel="noopener">QML编程入门</a><br>迁移相关：<br><a href="http://qt-project.org/doc/qt-4.8/porting4.html" target="_blank" rel="noopener">Porting to Qt 4</a>、<a href="http://qt-project.org/wiki/Transition_from_Qt_4.x_to_Qt5" target="_blank" rel="noopener">The Transition from Qt 4.x to Qt 5</a><br><a href="http://doc.qt.digia.com/solutions/qtwinmigrate/index.html" target="_blank" rel="noopener">Qt/MFC Migration Framework</a></p>
+<p>其他：<a href="http://qmlbook.org/" target="_blank" rel="noopener">A Book about Qt5</a>、<a href="http://www.digitalfanatics.org/projects/qt_tutorial/" target="_blank" rel="noopener">The Independent Qt® Tutorial</a>、<a href="http://blog.qt.digia.com/" target="_blank" rel="noopener">QT blog</a></p>
+<p>介绍QT的相关书籍：<a href="http://qt-project.org/books" target="_blank" rel="noopener">http://qt-project.org/books</a></p>
+<h2 id="选择QT-SDK"><a href="#选择QT-SDK" class="headerlink" title="选择QT SDK"></a>选择QT SDK</h2><p>进入下载页面：<a href="http://www.qt.io/download-open-source/#" target="_blank" rel="noopener">http://www.qt.io/download-open-source/#</a>，点击“View All Downloads”展开所有下载链接，个人一般下载“Qt 5.3.2 for Windows 32-bit (MinGW 4.8.2, 737.4 MB)”，其中含有QT Creator。</p>
+<h2 id="QT-Creator配置"><a href="#QT-Creator配置" class="headerlink" title="QT Creator配置"></a>QT Creator配置</h2><ul>
+<li><p><strong>将“字型”改为“Monaco”，“配色方案”改为“Inkpot”</strong><br>位置：“工具”-“选项”-“文本编辑器”-“字体和颜色”<br><img src="http://keke-hexo-blog.qiniudn.com/image/QT/QT Creator-字体和颜色.png" alt></p>
+</li>
+<li><p><strong>勾选“高亮显示当前行”和“高亮显示段落”</strong><br>位置：“工具”-“选项”-“文本编辑器”-“显示”<br><img src="http://keke-hexo-blog.qiniudn.com/image/QT/QT Creator-高亮显示.png" alt><br>效果如下（非当前行所在区块会被淡化以突出当前区块代码）：<br><img src="http://keke-hexo-blog.qiniudn.com/image/QT/QT Creator-高亮显示效果.png" alt></p>
+</li>
+</ul>
+<h2 id="QT-Creator使用"><a href="#QT-Creator使用" class="headerlink" title="QT Creator使用"></a>QT Creator使用</h2><p>首先，不得不赞一个，QT的文档做的很好，与QT Creator很好地集成在了一起，很容易上手。</p>
+<ul>
+<li><strong>QT-欢迎</strong><br>点击左侧的“QT欢迎”标签进入欢迎界面：<br><img src="http://keke-hexo-blog.qiniudn.com/image/QT/QT Creator-欢迎.png" alt></li>
+</ul>
+<p>可以点击“示例”按钮后选择一个示例，IDE打开项目的同时会弹出一个窗口，里面有该示例的详细说明，这些源码和说明文档都位于本地的QT安装目录中：<br><img src="http://keke-hexo-blog.qiniudn.com/image/QT/QT Creator-Application Example.png" alt></p>
+<p>可以点击“Get Started Now”按钮进入帮助页面，这里包含QT各方面的文档（位于QT安装目录）：<br><img src="http://keke-hexo-blog.qiniudn.com/image/QT/QT Creator-Getting Started.png" alt></p>
+<ul>
+<li><p><strong>QT帮助</strong><br>点击左侧的“帮助”标签可进入帮助页面，该帮助类似于VS的离线MSDN，但是被很好地集成在了QT Creator中，有着很强大的搜索功能，可以添加并查找书签，并且排版优于CHM格式的MSDN，使用起来感觉很流畅。<br><img src="http://keke-hexo-blog.qiniudn.com/image/QT/QT Creator帮助.png" alt></p>
+</li>
+<li><p><strong>左边栏</strong><br>左边栏上侧常用于显示“项目”（项目文件结构，类似于VS的“解决方案资源管理器”）、“类视图”（整个项目的类结构，类似于VS的“类视图”）、“大纲”（当前激活文件内的变量、函数、类，类似于Visual Assist的“VA Outline”），而下侧一般用于显示“打开文档”（类似于VS的打开文件标签，不过更强大，右击就可以看到）：<br><img src="http://keke-hexo-blog.qiniudn.com/image/QT/QT Creator左边栏.png" alt></p>
+</li>
+<li><p><strong>导航栏</strong><br>左上角的“返回”、“前进”是我常用的工具栏按钮，放在这里用起来很方便。<br><img src="http://keke-hexo-blog.qiniudn.com/image/QT/QT Creator上侧导航栏.png" alt></p>
+</li>
+<li><p><strong>输出栏</strong><br><img src="http://keke-hexo-blog.qiniudn.com/image/QT/QT Creator下侧调试结果显示.png" alt></p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/QT/" rel="tag"># QT</a>
+            
+              <a href="/tags/QT-Creator/" rel="tag"># QT Creator</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2014/11/01/construct-blog-with-hexo&&gitcafe/" rel="next" title="使用Hexo和Gitcafe搭建个人博客">
+                  <i class="fa fa-chevron-left"></i> 使用Hexo和Gitcafe搭建个人博客
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2014/11/15/learn-qt-two/" rel="prev" title="学习QT（二）— 初探">
+                  学习QT（二）— 初探 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为何学习QT"><span class="nav-number">1.</span> <span class="nav-text">为何学习QT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#QT学习资料"><span class="nav-number">2.</span> <span class="nav-text">QT学习资料</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#选择QT-SDK"><span class="nav-number">3.</span> <span class="nav-text">选择QT SDK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#QT-Creator配置"><span class="nav-number">4.</span> <span class="nav-text">QT Creator配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#QT-Creator使用"><span class="nav-number">5.</span> <span class="nav-text">QT Creator使用</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Joke</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span>
+        
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">标签</span>
+        
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Joke</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

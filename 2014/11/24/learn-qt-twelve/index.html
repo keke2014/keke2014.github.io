@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Qt 学习之路 2（55）：数据库操作 　　Qt 提供了 QtSql 模块来提供平台独立的基于 SQL 的数据库操作。这里我们所说的“平台独立”，既包括操作系统平台，有包括各个数据库平台。另外，我们强调了“基于 SQL”，因为 NoSQL 数据库至今没有一个通用查询方法，所以不可能提供一种通用的 NoSQL 数据库的操作。Qt 的数据库操作还可以很方便的与 model/view 架构进行整合。通">
+<meta name="keywords" content="QT,QT学习之路2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="学习QT（十二）—《QT学习之路2》摘录-10（数据库）">
+<meta property="og:url" content="http://jukezhang.vip/2014/11/24/learn-qt-twelve/index.html">
+<meta property="og:site_name" content="Joke&#39;s blog">
+<meta property="og:description" content="Qt 学习之路 2（55）：数据库操作 　　Qt 提供了 QtSql 模块来提供平台独立的基于 SQL 的数据库操作。这里我们所说的“平台独立”，既包括操作系统平台，有包括各个数据库平台。另外，我们强调了“基于 SQL”，因为 NoSQL 数据库至今没有一个通用查询方法，所以不可能提供一种通用的 NoSQL 数据库的操作。Qt 的数据库操作还可以很方便的与 model/view 架构进行整合。通">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-07T16:41:54.485Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="学习QT（十二）—《QT学习之路2》摘录-10（数据库）">
+<meta name="twitter:description" content="Qt 学习之路 2（55）：数据库操作 　　Qt 提供了 QtSql 模块来提供平台独立的基于 SQL 的数据库操作。这里我们所说的“平台独立”，既包括操作系统平台，有包括各个数据库平台。另外，我们强调了“基于 SQL”，因为 NoSQL 数据库至今没有一个通用查询方法，所以不可能提供一种通用的 NoSQL 数据库的操作。Qt 的数据库操作还可以很方便的与 model/view 架构进行整合。通">
+  <link rel="canonical" href="http://jukezhang.vip/2014/11/24/learn-qt-twelve/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>学习QT（十二）—《QT学习之路2》摘录-10（数据库） | Joke's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Joke's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Stay hungry, stay foolish - Steve Jobs</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://jukezhang.vip/2014/11/24/learn-qt-twelve/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Joke">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Joke's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">学习QT（十二）—《QT学习之路2》摘录-10（数据库）
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2014-11-24 16:33:37" itemprop="dateCreated datePublished" datetime="2014-11-24T16:33:37+08:00">2014-11-24</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-08 00:41:54" itemprop="dateModified" datetime="2019-09-08T00:41:54+08:00">2019-09-08</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/QT/" itemprop="url" rel="index"><span itemprop="name">QT</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <ul>
+<li><a href="http://www.devbean.net/2013/06/qt-study-road-2-database/" target="_blank" rel="noopener">Qt 学习之路 2（55）：数据库操作</a><blockquote>
+<p>　　Qt 提供了 QtSql 模块来提供平台独立的基于 SQL 的数据库操作。这里我们所说的“平台独立”，既包括操作系统平台，有包括各个数据库平台。另外，我们强调了“基于 SQL”，因为 NoSQL 数据库至今没有一个通用查询方法，所以不可能提供一种通用的 NoSQL 数据库的操作。Qt 的数据库操作还可以很方便的与 model/view 架构进行整合。通常来说，我们对数据库的操作更多地在于对数据库表的操作，而这正是 model/view 架构的长项。</p>
+</blockquote>
+</li>
+</ul>
+<a id="more"></a>
+<blockquote>
+<p>　　Qt 使用QSqlDatabase表示一个数据库连接。更底层上，Qt 使用驱动（drivers）来与不同的数据库 API 进行交互。Qt 桌面版本提供了如下几种驱动：</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>驱动</th>
+<th>数据库</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>QDB2</td>
+<td>IBM DB2 (7.1 或更新版本)</td>
+</tr>
+<tr>
+<td>QIBASE</td>
+<td>Borland InterBase</td>
+</tr>
+<tr>
+<td>QMYSQL</td>
+<td>MySQL</td>
+</tr>
+<tr>
+<td>QOCI</td>
+<td>Oracle Call Interface Driver</td>
+</tr>
+<tr>
+<td>QODBC</td>
+<td>Open Database Connectivity (ODBC) – Microsoft SQL Server 及其它兼容 ODBC 的数据库</td>
+</tr>
+<tr>
+<td>QPSQL</td>
+<td>PostgreSQL (7.3 或更新版本)</td>
+</tr>
+<tr>
+<td>QSQLITE2</td>
+<td>SQLite 2</td>
+</tr>
+<tr>
+<td>QSQLITE</td>
+<td>SQLite 3</td>
+</tr>
+<tr>
+<td>QSYMSQL</td>
+<td>针对 Symbian 平台的SQLite 3</td>
+</tr>
+<tr>
+<td>QTDS</td>
+<td>Sybase Adaptive Server (自 Qt 4.7 起废除)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>　　不过，由于受到协议的限制，Qt 开源版本并没有提供上面所有驱动的二进制版本，而仅仅以源代码的形式提供。通常，Qt 只默认搭载 QSqlite 驱动（这个驱动实际还包括 Sqlite 数据库，也就是说，如果需要使用 Sqlite 的话，只需要该驱动即可）。我们可以选择把这些驱动作为 Qt 的一部分进行编译，也可以当作插件编译。<br>　　如果习惯于使用 SQL 语句，我们可以选择QSqlQuery类；如果只需要使用高层次的数据库接口（不关心 SQL 语法），我们可以选择QSqlTableModel和QSqlRelationalTableModel。本章我们介绍QSqlQuery类，在后面的章节则介绍QSqlTableModel和QSqlRelationalTableModel。</p>
+</blockquote>
+<ul>
+<li><a href="http://www.devbean.net/2013/06/qt-study-road-2-sql-model/" target="_blank" rel="noopener">Qt 学习之路 2（56）：使用模型操作数据库</a><blockquote>
+<p>　　前一章我们使用 SQL 语句完成了对数据库的常规操作，包括简单的 CREATE、SELECT 等语句的使用。我们也提到过，Qt 不仅提供了这种使用 SQL 语句的方式，还提供了一种基于模型的更高级的处理方式。这种基于QSqlTableModel 的模型处理更为高级，如果对 SQL 语句不熟悉，并且不需要很多复杂的查询，这种QSqlTableModel模型基本可以满足一般的需求。本章我们将介绍QSqlTableModel的一般使用，对比 SQL 语句完成对数据库的增删改查等的操作。值得注意的是，QSqlTableModel并不一定非得结合 QListView或QTableView使用，我们完全可以用其作一般性处理。<br>　　————————————————————————–<br>　　另外需要注意，由于QSqlTableModel只是一种高级操作，肯定没有实际 SQL 语句方便。具体来说，我们使用QSqlTableModel只能进行 SELECT * 的查询，不能只查询其中某些列的数据。</p>
+</blockquote>
+</li>
+</ul>
+<p>＊ <a href="http://www.devbean.net/2013/06/qt-study-road-2-show-sql-data/" target="_blank" rel="noopener">Qt 学习之路 2（57）：可视化显示数据库数据</a></p>
+<blockquote>
+<p>　　前面我们用了两个章节介绍了 Qt 提供的两种操作数据库的方法。显然，使用QSqlQuery的方式更灵活，功能更强大，而使用QSqlTableModel则更简单，更方便与 model/view 结合使用（数据库应用很大一部分就是以表格形式显示出来，这正是 model/view 的强项）。本章我们简单介绍使用QSqlTableModel显示数据的方法。当然，我们也可以选择使用QSqlQuery获取数据，然后交给 view 显示，而这需要自己给 model 提供数据。鉴于我们前面已经详细介绍过如何使用自定义 model 以及如何使用QTableWidget，所以我们这里不再详细说明这一方法。</p>
+</blockquote>
+<ul>
+<li><a href="http://www.devbean.net/2013/07/qt-study-road-2-edit-sql-fk/" target="_blank" rel="noopener">Qt 学习之路 2（58）：编辑数据库外键</a><blockquote>
+<p>　　前面几章我们介绍了如何对数据库进行操作以及如何使用图形界面展示数据库数据。本章我们将介绍如何对数据库的数据进行编辑。当然，我们可以选择直接使用 SQL 语句进行更新，这一点同前面所说的 model/view 的编辑没有什么区别。除此之外，Qt 还为图形界面提供了更方便的展示并编辑的功能。<br>　　普通数据的编辑很简单，这里不再赘述。不过，我们通常会遇到多个表之间存在关联的情况。<br>　　————————————————————————–<br>　　注意外键部分：City 一列仅显示出了我们保存的外键。如果我们使用QSqlQuery，这些都不是问题，我们可以将外键信息放在一个 SQL 语句中 SELECT 出来。但是，我们不想使用QSqlQuery，那么现在可以使用另外的一个模型：QSqlRelationalTableModel。QSqlRelationalTableModel与QSqlTableModel十分类似，可以为一个数据库表提供可编辑的数据模型，同时带有外键的支持。<br>　　这段代码同前面的几乎一样。我们首先创建一个QSqlRelationalTableModel对象。注意，这里我们有一个setRelation()函数的调用。该语句说明，我们将第ColumnID_City列作为外键，参照于 city 表的 id 字段，使用 name 进行显示。另外的setItemDelegate()语句则提供了一种用于编辑外键的方式。</p>
+</blockquote>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/QT/" rel="tag"># QT</a>
+            
+              <a href="/tags/QT学习之路2/" rel="tag"># QT学习之路2</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2014/11/23/learn-qt-eleven/" rel="next" title="学习QT（十一）—《QT学习之路2》摘录-9（MVC）">
+                  <i class="fa fa-chevron-left"></i> 学习QT（十一）—《QT学习之路2》摘录-9（MVC）
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2014/11/27/configure-aliyun-ECS/" rel="prev" title="阿里云ECS配置LNMPA服务器">
+                  阿里云ECS配置LNMPA服务器 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Joke</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span>
+        
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">标签</span>
+        
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Joke</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

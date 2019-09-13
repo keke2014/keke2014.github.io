@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Qt 学习之路 2（38）：存储容器 　　存储容器（containers）有时候也被称为集合（collections），是能够在内存中存储其它特定类型的对象，通常是一些常用的数据结构，一般是通用模板类的形式。C++ 提供了一套完整的解决方案，作为标准模板库（Standard Template Library）的组成部分，也就是常说的 STL。">
+<meta name="keywords" content="QT,QT学习之路2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="学习QT（八）—《QT学习之路2》摘录-6（容器）">
+<meta property="og:url" content="http://jukezhang.vip/2014/11/23/learn-qt-eight/index.html">
+<meta property="og:site_name" content="Joke&#39;s blog">
+<meta property="og:description" content="Qt 学习之路 2（38）：存储容器 　　存储容器（containers）有时候也被称为集合（collections），是能够在内存中存储其它特定类型的对象，通常是一些常用的数据结构，一般是通用模板类的形式。C++ 提供了一套完整的解决方案，作为标准模板库（Standard Template Library）的组成部分，也就是常说的 STL。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-07T16:41:54.449Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="学习QT（八）—《QT学习之路2》摘录-6（容器）">
+<meta name="twitter:description" content="Qt 学习之路 2（38）：存储容器 　　存储容器（containers）有时候也被称为集合（collections），是能够在内存中存储其它特定类型的对象，通常是一些常用的数据结构，一般是通用模板类的形式。C++ 提供了一套完整的解决方案，作为标准模板库（Standard Template Library）的组成部分，也就是常说的 STL。">
+  <link rel="canonical" href="http://jukezhang.vip/2014/11/23/learn-qt-eight/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>学习QT（八）—《QT学习之路2》摘录-6（容器） | Joke's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Joke's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Stay hungry, stay foolish - Steve Jobs</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://jukezhang.vip/2014/11/23/learn-qt-eight/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Joke">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Joke's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">学习QT（八）—《QT学习之路2》摘录-6（容器）
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2014-11-23 10:41:37" itemprop="dateCreated datePublished" datetime="2014-11-23T10:41:37+08:00">2014-11-23</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-08 00:41:54" itemprop="dateModified" datetime="2019-09-08T00:41:54+08:00">2019-09-08</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/QT/" itemprop="url" rel="index"><span itemprop="name">QT</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <ul>
+<li><a href="http://www.devbean.net/2013/01/qt-study-road-2-containers/" target="_blank" rel="noopener">Qt 学习之路 2（38）：存储容器</a><blockquote>
+<p>　　存储容器（containers）有时候也被称为集合（collections），是能够在内存中存储其它特定类型的对象，通常是一些常用的数据结构，一般是通用模板类的形式。C++ 提供了一套完整的解决方案，作为标准模板库（Standard Template Library）的组成部分，也就是常说的 STL。</p>
+</blockquote>
+</li>
+</ul>
+<a id="more"></a>
+<blockquote>
+<p>　　Qt 提供了另外一套基于模板的容器类。相比 STL，这些容器类通常更轻量、更安全、更容易使用。如果你对 STL 不大熟悉，或者更喜欢 Qt 风格的 API，那么你就应该选择使用这些类。当然，你也可以在 Qt 中使用 STL 容器，没有任何问题。<br>　　本章的目的，是让你能够选择使用哪个容器，而不是告诉你这个类都哪些函数。这个问题可以在文档中找到更清晰的回答。<br>　　<strong>Qt 的容器类都不继承QObject，都提供了隐式数据共享、不可变的特性，并且为速度做了优化，具有较低的内存占用量等。另外一点比较重要的，它们是线程安全的。</strong>这些容器类是平台无关的，即不因编译器的不同而具有不同的实现；隐式数据共享，有时也被称作“写时复制（copy on write）”，这种技术允许在容器类中使用传值参数，但却不会出现额外的性能损失。遍历是容器类的重要操作。<strong>Qt 容器类提供了类似 Java 的遍历器语法，同样也提供了类似 STL 的遍历器语法，以方便用户选择自己习惯的编码方式。相比而言，Java 风格的遍历器更易用，是一种高层次的函数；而 STL 风格的遍历器更高效，同时能够支持 Qt 和 STL 的通用算法。最后一点，在一些嵌入式平台，STL 往往是不可用的，这时你就只能使用 Qt 提供的容器类，除非你想自己创建。</strong>顺便提一句，除了遍历器，Qt 还提供了自己的 foreach 语法（C++ 11 也提供了类似的语法，但有所区别，详见<a href="http://www.devbean.net/2012/06/cpp11-in-qt4/" target="_blank" rel="noopener">这里</a>的 foreach 循环一节）。<br>　　Qt 提供了顺序存储容器：QList，QLinkedList，QVector，QStack和QQueue。对于绝大多数应用程序，QList是最好的选择。虽然它是基于数组实现的列表，但它提供了快速的向前添加和向后追加的操作。如果你需要链表，可以使用QLinkedList。如果你希望所有元素占用连续地址空间，可以选择QVector。QStack和QQueue则是 LIFO 和 FIFO 的。<br>　　Qt 还提供了关联容器：QMap，QMultiMap，QHash，QMultiHash和QSet。带有“Multi”字样的容器支持在一个键上面关联多个值。“Hash”容器提供了基于散列函数的更快的查找，而非 Hash 容器则是基于二分搜索的有序集合。<br>　　另外两个特例：QCache和QContiguousCache提供了在有限缓存空间中的高效 hash 查找。<br>　　我们将 Qt 提供的各个容器类总结如下：<br>　　QList<t>：这是至今为止提供的最通用的容器类。它将给定的类型 T 的对象以列表的形式进行存储，与一个整型的索引关联。QList在内部使用数组实现，同时提供基于索引的快速访问。我们可以使用 QList::append()和QList::prepend()在列表尾部或头部添加元素，也可以使用QList::insert()在中间插入。相比其它容器类，QList专门为这种修改操作作了优化。QStringList继承自QList<qstring>。<br>　　QLinkedList<t>：类似于 QList，除了它是使用遍历器进行遍历，而不是基于整数索引的随机访问。对于在中部插入大量数据，它的性能要优于QList。同时具有更好的遍历器语义（只要数据元素存在，QLinkedList的遍历器就会指向一个合法元素，相比而言，当插入或删除数据时，QList的遍历器就会指向一个非法值）。<br>　　QVector<t>：用于在内存的连续区存储一系列给定类型的值。在头部或中间插入数据可能会非常慢，因为这会引起大量数据在内存中的移动。<br>　　QStack<t>：这是QVector的子类，提供了后进先出（LIFO）语义。相比QVector，它提供了额外的函数：push()，pop()和top()。<br>　　QQueue<t>：这是QList的子类，提供了先进先出（FIFO）语义。相比QList，它提供了额外的函数：enqueue()，dequeue()和head()。<br>　　QSet<t>：提供单值的数学上面的集合，具有快速的查找性能。<br>　　QMap&lt;Key, T&gt;：提供了字典数据结构（关联数组），将类型 T 的值同类型 Key 的键关联起来。通常，每个键与一个值关联。QMap以键的顺序存储数据；如果顺序无关，QHash提供了更好的性能。<br>　　QMultiMap&lt;Key, T&gt;：这是QMap的子类，提供了多值映射：一个键可以与多个值关联。<br>　　QHash&lt;Key, T&gt;：该类同QMap的接口几乎相同，但是提供了更快的查找。QHash以字母顺序存储数据。<br>　　QMultiHash&lt;Key, T&gt;：这是QHash的子类，提供了多值散列。<br>　　所有的容器都可以嵌套。例如，QMap&lt;QString, QList<int> &gt;是一个映射，其键是QString类型，值是QList<int>类型，也就是说，每个值都可以存储多个 int。这里需要注意的是，C++ 编译器会将连续的两个 &gt; 当做输入重定向运算符，因此，这里的两个 &gt; 中间必须有一个空格。<br>　　<strong>能够存储在容器中的数据必须是可赋值数据类型。所谓可赋值数据类型，是指具有默认构造函数、拷贝构造函数和赋值运算符的类型。</strong>绝大多数数据类型，包括基本类型，比如 int 和 double，指针，Qt 数据类型，例如QString、QDate和QTime，都是可赋值数据类型。<strong>但是，QObject及其子类（QWidget、QTimer等）都不是。也就是说，你不能使用QList<qwidget>这种容器，因为QWidget的拷贝构造函数和赋值运算符不可用。如果你需要这种类型的容器，只能存储其指针，也就是QList<qwidget *>。</qwidget></qwidget></strong><br>　　<strong>如果要使用QMap或者QHash，作为键的类型必须提供额外的辅助函数。QMap的键必须提供operator&lt;()重载，QHash的键必须提供operator==()重载和一个名字是qHash()的全局函数。</strong></int></int></t></t></t></t></t></qstring></t></p>
+</blockquote>
+<ul>
+<li><a href="http://www.devbean.net/2013/01/qt-study-road-2-iterator/" target="_blank" rel="noopener">Qt 学习之路 2（39）：遍历容器</a><blockquote>
+<p>　　Qt 的容器类提供了两种风格的遍历器：Java 风格和 STL 风格。这两种风格的遍历器在通过非 const 函数对集合进行修改时都是不可用的。<br>　　<strong>Java 风格的遍历器</strong><br>　　Java 风格的遍历器是在 Qt4 首先引入的，是 Qt 应用程序首先推荐使用的形式。这种风格比起 STL 风格的遍历器更方便。方便的代价就是不如后者高效。它们的 API 非常类似于 Java 的遍历器类，故名。<br>　　每一种容器都有两种 Java 风格的遍历器：一种提供只读访问，一种提供读写访问：</p>
+</blockquote>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>容器    只读遍历器</th>
+<th>读写遍历器</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>QList<t>,QQueue<t></t></t></td>
+<td>QListIterator<t>    QMutableListIterator<t></t></t></td>
+</tr>
+<tr>
+<td>QLinkedList<t></t></td>
+<td>QLinkedListIterator<t>    QMutableLinkedListIterator<t></t></t></td>
+</tr>
+<tr>
+<td>QVector<t>,QStack<t></t></t></td>
+<td>QVectorIterator<t>    QMutableVectorIterator<t></t></t></td>
+</tr>
+<tr>
+<td>QSet<t>    QSetIterator<t></t></t></td>
+<td>QMutableSetIterator<t></t></td>
+</tr>
+<tr>
+<td>QMap&lt;Key, T&gt;,QMultiMap&lt;Key, T&gt;</td>
+<td>QMapIterator<t>    QMutableMapIterator<t></t></t></td>
+</tr>
+<tr>
+<td>QHash&lt;Key, T&gt;,QMultiHash&lt;Key, T&gt;</td>
+<td>QHashIterator<t>    QMutableHashIterator<t></t></t></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>　　不同于下面我们将要介绍的 STL 风格的遍历器，Java 风格的遍历器指向的是两个元素之间的位置，而不是指向元素本身。因此，它们可能会指向集合第一个元素之前的位置，也可能指向集合的最后一个元素之后的位置。<br>　　我们通过调用hasNext()函数判断遍历器之后的位置上有无元素。如果有，调用next()函数将遍历器跳过其后的元素。next()函数返回刚刚跳过的元素。当然，我们也可以使用hasPrevious()和previous()函数来从尾部开始遍历，详细内容可以参考 API 文档。<br>　　QListIterator是只读遍历器，不能插入或者删除数据。如果需要这些操作，我们可以使用QMutableListIterator。<br>　　<strong>STL 风格的遍历器</strong><br>　　STL 风格的遍历器从 Qt 2.0 就开始提供。这种遍历器能够兼容 Qt 和 STL 的通用算法，并且为速度进行了优化。同 Java 风格遍历器类似，Qt 也提供了两种 STL 风格的遍历器：一种是只读访问，一种是读写访问。我们推荐尽可能使用只读访问，因为它们要比读写访问的遍历器快一些。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>容器</th>
+<th>只读遍历器</th>
+<th>读写遍历器</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>QList<t>,QQueue<t></t></t></td>
+<td>QList<t>::const_iterator</t></td>
+<td>QList<t>::iterator</t></td>
+</tr>
+<tr>
+<td>QLinkedList<t></t></td>
+<td>QLinkedList<t>::const_iterator</t></td>
+<td>QLinkedList<t>::iterator</t></td>
+</tr>
+<tr>
+<td>QVector<t>,QStack<t></t></t></td>
+<td>QVector<t>::const_iterator</t></td>
+<td>QVector<t>::iterator</t></td>
+</tr>
+<tr>
+<td>QSet<t></t></td>
+<td>QSet<t>::const_iterator</t></td>
+<td>QSet<t>::iterator</t></td>
+</tr>
+<tr>
+<td>QMap&lt;Key, T&gt;,QMultiMap&lt;Key, T&gt;</td>
+<td>QMap&lt;Key, T&gt;::const_iterator</td>
+<td>QMap&lt;Key, T&gt;::iterator</td>
+</tr>
+<tr>
+<td>QHash&lt;Key, T&gt;,QMultiHash&lt;Key, T&gt;</td>
+<td>QHash&lt;Key, T&gt;::const_iterator</td>
+<td>QHash&lt;Key, T&gt;::iterator</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>　　STL 风格的遍历器具有类似数组指针的行为。例如，我们可以使用 ++ 运算符让遍历器移动到下一个元素，使用 <em> 运算符获取遍历器所指的元素。对于QVector和QStack，虽然它们是在连续内存区存储元素，遍历器类型是`typedef T </em><code>，const_iterator类型则是</code>typedef const T *`。<br>　　不同于 Java 风格遍历器，STL 风格遍历器直接指向元素本身。容器的begin()函数返回指向该容器第一个元素的遍历器；end()函数返回指向该容器最后一个元素之后的元素的遍历器。end()实际是一个非法位置，永远不可达。这是为跳出循环做的一个虚元素。如果集合是空的，begin()等于end()，我们就不能执行循环。<br>　　由于有隐式数据共享（我们会在后面的章节介绍该部分内容），即使一个函数返回集合中元素的值也不会有很大的代价。Qt API 包含了很多以值的形式返回QList或QStringList的函数（例如QSplitter::sizes()）。如果你希望使用 STL 风格的遍历器遍历这样的元素，应该使用容器的拷贝，例如：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 正确的方式</span><br><span class="line">const QList&lt;QString&gt; sizes = splitter-&gt;sizes();</span><br><span class="line">QList&lt;QString&gt;::const_iterator i;</span><br><span class="line">for (i = sizes.begin(); i != sizes.end(); ++i)</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">// 错误的方式</span><br><span class="line">QList&lt;QString&gt;::const_iterator i;</span><br><span class="line">for (i = splitter-&gt;sizes().begin();</span><br><span class="line">     i != splitter-&gt;sizes().end(); ++i)</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>　　<strong>这个问题不存在于那些返回集合的 const 或非 const 引用的函数。隐式数据共享对 STL 风格遍历器造成的另外影响是，在容器上运行着非 const 遍历器的时候，不能对容器进行拷贝。Java 风格的遍历器没有这个问题。</strong><br>　　<strong>foreach关键字</strong><br>　　如果类型名中带有逗号，比如QPair&lt;int, int&gt;，我们只能像上面一样，先创建一个对象，然后使用foreach关键字。如果没有逗号，则可以直接在foreach关键字中使用新的对象。<br>　　<strong>Qt 会在foreach循环时自动拷贝容器。这意味着，如果在遍历时修改集合，对于正在进行的遍历是没有影响的。即使不修改容器，拷贝也是会发生的。但是由于存在隐式数据共享，这种拷贝还是非常迅速的。</strong><br>　　<strong>因为foreach创建了集合的拷贝，使用集合的非 const 引用也不能实际修改原始集合，所修改的只是这个拷贝。</strong></p>
+</blockquote>
+<ul>
+<li><a href="http://www.devbean.net/2013/01/qt-study-road-2-implicit-sharing/" target="_blank" rel="noopener">Qt 学习之路 2（40）：隐式数据共享</a><blockquote>
+<p>　　Qt 中许多 C++ 类使用了隐式数据共享技术，来最大化资源利用率和最小化拷贝时的资源消耗。当作为参数传递时，具有隐式数据共享的类即安全又高效。在数据传递时，实际上只是传递了数据的指针（这一切都是隐含帮你完成的），而只有在函数发生需要写入的情况时，数据才会被拷贝（也就是通常所说的写时复制）。本章我们将介绍有关隐式数据共享的相关内容，以便为恰当地使用前面所介绍的容器夯实基础。<br>　　具有数据共享能力的类包含了一个指向共享数据块的指针。这个数据块包含了数据本身以及数据的引用计数。当共享对象创建出来时，引用计数被设置为 1。当新的对象引用到共享数据时，引用计数增加；当对象引用不再引用数据时，引用计数减少。当引用计数变为 0 时，共享数据被删除。<br>　　在我们操作共享数据时，实际有两种拷贝对象的方法：我们通常称其为深拷贝和浅拷贝。深拷贝意味着要重新构造一个全新的对象；浅拷贝则仅仅复制引用，也就是上面所说的那个指向共享数据块的指针。深拷贝对内存和 CPU 资源都是很昂贵的；浅拷贝则非常快速，因为它仅仅是设置一个新的指针，然后将引用计数加 1。具有隐式数据共享的对象，其赋值运算符使用的是浅拷贝来实现的。<br>　　这种隐式数据共享的好处是，程序不需要拥有不必要的重复数据，减少数据拷贝的需求。重复数据的代价是降低内存使用率（因为内存存储了更多重复的数据）。通过数据共享，对象可以更简单地作为值来传递以及从函数中返回。<br>　　隐式数据共享是在底层自动完成的，程序人员无需关心。这也是“隐式”一词的含义。从 Qt4 开始，即使在多线程程序中，隐式数据共享也是起作用的。在很多人看来，隐式数据共享和多线程是不兼容的，这是由引用计数的实现方式决定的。但是，Qt 使用了原子性的引用计数来避免多线程环境下可能出现的执行顺序打断的行为。需要注意的是，原子引用计数并不能保证线程安全，还是需要恰当的锁机制。这种观点对所有类似的场合都是适用的。原子引用计数能够保证的是，线程肯定操作自己的数据，线程自己的数据是安全的。总的来说，从 Qt4 开始，你可以放心使用隐式数据共享的类，即使在多线程环境下。<br>　　我们可以使用QSharedData和QSharedDataPointer类实现自己的隐式数据共享类。<br>　　当对象即将被修改，并且其引用计数大于 1 时，隐式数据共享自动将数据从共享块中拿出。隐式共享类必须控制其内部数据，在任何修改其数据的函数中，将数据自动取出。<br>　　————————————————————————-<br>　　凡是支持隐式数据共享的 Qt 类都支持类似的操作。用户甚至不需要知道对象其实已经共享。因此，你应该把这样的类当作普通类一样，而不应该依赖于其共享的特色作一些“小动作”。事实上，这些类的行为同普通类一样，只不过添加了可能的共享数据的优点。因此，你大可以使用按值传参，而无须担心数据拷贝带来的性能问题。<br>　　————————————————————————-<br>　　<strong>注意，前面已经提到过，不要在使用了隐式数据共享的容器上，在有非 const STL 风格的遍历器正在遍历时复制容器。另外还有一点，对于QList或者QVector，我们应该使用at()函数而不是 [] 操作符进行只读访问。原因是 [] 操作符既可以是左值又可以是右值，这让 Qt 容器很难判断到底是左值还是右值，这意味着无法进行隐式数据共享；而at()函数不能作左值，因此可以进行隐式数据共享。另外一点是，对于begin()，end()以及其他一些非 const 遍历器，由于数据可能改变，因此 Qt 会进行深复制。为了避免这一点，要尽可能使用const_iterator、constBegin()和constEnd()。</strong></p>
+</blockquote>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/QT/" rel="tag"># QT</a>
+            
+              <a href="/tags/QT学习之路2/" rel="tag"># QT学习之路2</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2014/11/22/learn-qt-seven/" rel="next" title="学习QT（七）—《QT学习之路2》摘录-5（文件）">
+                  <i class="fa fa-chevron-left"></i> 学习QT（七）—《QT学习之路2》摘录-5（文件）
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2014/11/23/learn-qt-nine/" rel="prev" title="学习QT（九）—《QT学习之路2》摘录-7（访问网络）">
+                  学习QT（九）—《QT学习之路2》摘录-7（访问网络） <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Joke</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span>
+        
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">标签</span>
+        
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Joke</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
